@@ -13,7 +13,7 @@
         command: /usr/bin/timedatectl set-ntp true
 
       - name: "partitioning"
-        include: fdisk.yml
+        include: partition.yml
 
       - name: "filesystem"
         include: filesystem.yml
