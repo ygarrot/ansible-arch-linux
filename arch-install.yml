@@ -12,100 +12,14 @@
       - name: "Enable ntp"
         command: /usr/bin/timedatectl set-ntp true
 
-      - name: "Create a new primary /boot partition"
-        parted:
-            device: /dev/sda
-            number: 1
-            flags: [ boot ]
-            state: present
-            part_type: primary
-            part_end: "{{ boot_size }}"
+      - name: "partitioning"
+        include: fdisk.yml
 
-      - name: Create a new primary swap partition
-        parted:
-            device: /dev/sda
-            number: 2
-            state: present
-            part_type: primary
-            part_start: "{{ boot_size }}"
-            part_end: "{{ swap_size }}"
+      - name: "filesystem"
+        include: filesystem.yml
 
-      - name: "Create a new primary / partition"
-        parted:
-            device: /dev/sda
-            number: 3
-            state: present
-            part_type: primary
-            part_start: "{{ swap_size}}"
-            part_end: "{{ root_size }}"
-
-      - name: "Create a new primary /home partition"
-        parted:
-            device: /dev/sda
-            number: 4
-            part_type: extended
-            state: present
-            part_start: "{{ root_size }}"
-
-      - name: "Create a ext4 filesystem on /dev/sda1 for boot"
-        filesystem:
-            fstype: ext4
-            dev: /dev/sda1
-            opts: -cc
-
-      - name: "Create a swap filesystem on /dev/sda2 for swap"
-        filesystem:
-            fstype: swap
-            dev: /dev/sda2
-            opts: -cc
-
-      - name: "Create a ext4 filesystem on /dev/sda3 for root"
-        filesystem:
-            fstype: ext4
-            dev: /dev/sda3
-            opts: -cc
-
-      - name: "Create a ext4 filesystem on /dev/sda4 for home"
-        filesystem:
-            fstype: ext4
-            dev: /dev/sda4
-            opts: -cc
-
-      - name: "Setup swap partition"
-        shell: "mkswap /dev/sda2 && /usr/bin/swapon /dev/sda2"
-
-      - name: "Create root directory"
-        file:
-            path: /mnt/boot
-            state: directory
-            recurse: yes
-            # owner: foo
-            # group: foo
-
-      - name : "mount root"
-        mount:
-            path: /mnt
-            src: /dev/sda3
-            # fstype: iso9660
-            # opts: ro,noauto
-            state: mounted
-
-      - name: "Create boot directory"
-        file:
-            path: /mnt/boot
-            state: directory
-            recurse: yes
-            # owner: foo
-            # group: foo
-
-      - name : "mount boot"
-        mount:
-            path: /mnt/boot
-            src: /dev/sda3
-            # fstype: iso9660
-            # opts: ro,noauto
-            state: mounted
-
+      - name: "mount"
+        include: mount.yml
 
       - name: "Installs base system using pacstrap"
         command: /usr/bin/pacstrap /mnt base base-devel ansible networkmanager vim
