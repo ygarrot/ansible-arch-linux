@@ -1,0 +1,32 @@
+---
+- name: Install Arch Linux from an Arch ISO
+  hosts: localhost
+  tasks:
+    - name: Check internet connectivity
+      wait_for:
+        host: archlinux.org
+        port: 80
+
+    - name: Enable ntp
+      command: /usr/bin/timedatectl set-ntp true
+
+    - name: Enable ntp
+      command: /usr/bin/timedatectl status
+      register: ntp
+    - debug: msg="{{ ntp.stdout }}"
+    - debug: msg="{{ ntp.stderr }}"
+
+    - name: Check disks
+      command: /usr/bin/fdisk -l
+      register: fdisk
+    - debug: msg="{{ fdisk.stdout }}"
+    - debug: msg="{{ fdisk.stderr }}"
+    - name: Partition disk
+      command: /usr/bin/fdisk /dev/sda
+    - name: Format disk
+      command: /usr/bin/mkfs.ext4 /dev/sda1
+    - name: Check disks
+      command: /usr/bin/fdisk -l
+      register: fdisk
+    - debug: msg="{{ fdisk.stdout }}"
+    - debug: msg="{{ fdisk.stderr }}"
