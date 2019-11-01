@@ -1,28 +1,23 @@
 ---
-- name: Install Arch Linux from an Arch ISO
+- name: "Install Arch Linux from an Arch ISO"
   hosts: localhost
-  vars_files: 
-- var.yml
+  vars_files:
+      - var.yml
   tasks:
-      - name: Check internet connectivity
+      - name: "Check internet connectivity"
         wait_for:
             host: archlinux.org
             port: 80
 
-      - name: Enable ntp
+      - name: "Enable ntp"
         command: /usr/bin/timedatectl set-ntp true
 
-      - name: Enable ntp
-        command: /usr/bin/timedatectl status
-        register: ntp
-
-      - name: Create a new primary /boot partition
+      - name: "Create a new primary /boot partition"
         parted:
             device: /dev/sda
             number: 1
             state: present
             part_type: primary
-            flags: [ boot ]
             part_end: "{{ boot_size }}"
 
       - name: Create a new primary swap partition
@@ -35,17 +30,16 @@
             part_start: "{{ boot_size }}"
             part_end: "{{ swap_size }}"
 
-      - name: Create a new primary / partition
+      - name: "Create a new primary / partition"
         parted:
             device: /dev/sda
             number: 3
             state: present
             part_type: primary
-            flags: [ root ]
             part_start: "{{ swap_size}}"
             part_end: "{{ root_size }}"
 
-      - name: Create a new primary /home partition
+      - name: "Create a new primary /home partition"
         parted:
             device: /dev/sda
             number: 4
@@ -53,26 +47,68 @@
             state: present
             part_start: "{{ root_size }}"
 
-      - name: Create a ext4 filesystem on /boot
+      - name: "Create a ext4 filesystem on /dev/sda1 for boot"
         filesystem:
             fstype: ext4
             dev: /dev/sda1
             opts: -cc
 
-      - name: Create a ext4 filesystem on /boot
+      - name: "Create a swap filesystem on /dev/sda2 for swap"
         filesystem:
             fstype: swap
             dev: /dev/sda2
             opts: -cc
 
-      - name: Create a ext4 filesystem on /boot
+      - name: "Create a ext4 filesystem on /dev/sda3 for root"
         filesystem:
             fstype: ext4
             dev: /dev/sda3
             opts: -cc
 
-      - name: Create a ext4 filesystem on /boot
+      - name: "Create a ext4 filesystem on /dev/sda4 for home"
         filesystem:
             fstype: ext4
             dev: /dev/sda4
             opts: -cc
+
+      - name: "Setup swap partition"
+        shell: "mkswap /dev/sda2 && /usr/bin/swapon /dev/sda2"
+
+      - name: "Create root directory"
+        file:
+            path: /mnt/boot
+            state: directory
+            recurse: yes
+            # owner: foo
+            # group: foo
+
+      - name : "mount root"
+        mount:
+            path: /mnt
+            src: /dev/sda3
+            # fstype: iso9660
+            # opts: ro,noauto
+            state: mounted
+
+      - name: "Create boot directory"
+        file:
+            path: /mnt/boot
+            state: directory
+            recurse: yes
+            # owner: foo
+            # group: foo
+
+      - name : "mount boot"
+        mount:
+            path: /mnt/boot
+            src: /dev/sda3
+            # fstype: iso9660
+            # opts: ro,noauto
+            state: mounted
+
+
+      - name: "Installs base system using pacstrap"
+        command: /usr/bin/pacstrap /mnt base base-devel ansible networkmanager vim
+
+      - name: "Populates base system fstab with configured storage devices"
+        shell: /usr/bin/genfstab -U -p /mnt >> /mnt/etc/fstab
