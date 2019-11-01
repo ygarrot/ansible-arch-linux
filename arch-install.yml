@@ -16,6 +16,7 @@
         parted:
             device: /dev/sda
             number: 1
+            flags: [ boot ]
             state: present
             part_type: primary
             part_end: "{{ boot_size }}"
@@ -26,7 +27,6 @@
             number: 2
             state: present
             part_type: primary
-            flags: [ swap ]
             part_start: "{{ boot_size }}"
             part_end: "{{ swap_size }}"
 
