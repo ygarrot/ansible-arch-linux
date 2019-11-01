@@ -22,6 +22,7 @@
             number: 1
             state: present
             part_type: primary
+            flags: [ boot ]
             part_end: "{{ boot_size }}"
 
       - name: Create a new primary swap partition
@@ -30,6 +31,7 @@
             number: 2
             state: present
             part_type: primary
+            flags: [ swap ]
             part_start: "{{ boot_size }}"
             part_end: "{{ swap_size }}"
 
@@ -39,6 +41,7 @@
             number: 3
             state: present
             part_type: primary
+            flags: [ root ]
             part_start: "{{ swap_size}}"
             part_end: "{{ root_size }}"
 
@@ -54,4 +57,22 @@
         filesystem:
             fstype: ext4
             dev: /dev/sda1
+            opts: -cc
+
+      - name: Create a ext4 filesystem on /boot
+        filesystem:
+            fstype: swap
+            dev: /dev/sda2
+            opts: -cc
+
+      - name: Create a ext4 filesystem on /boot
+        filesystem:
+            fstype: ext4
+            dev: /dev/sda3
+            opts: -cc
+
+      - name: Create a ext4 filesystem on /boot
+        filesystem:
+            fstype: ext4
+            dev: /dev/sda4
             opts: -cc
