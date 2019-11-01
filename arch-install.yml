@@ -1,50 +1,57 @@
 ---
 - name: Install Arch Linux from an Arch ISO
   hosts: localhost
-  vars_files: var.yml
+  vars_files: 
+- var.yml
   tasks:
-    - name: Check internet connectivity
-      wait_for:
-        host: archlinux.org
-        port: 80
+      - name: Check internet connectivity
+        wait_for:
+            host: archlinux.org
+            port: 80
 
-    - name: Enable ntp
-      command: /usr/bin/timedatectl set-ntp true
+      - name: Enable ntp
+        command: /usr/bin/timedatectl set-ntp true
 
-    - name: Enable ntp
-      command: /usr/bin/timedatectl status
-      register: ntp
+      - name: Enable ntp
+        command: /usr/bin/timedatectl status
+        register: ntp
 
-    - name: Create a new primary /boot partition
-      parted:
-          device: /dev/sda
-          number: 1
-          state: present
-          part_type: primary
-          part_end: "{{ boot_size }}"
+      - name: Create a new primary /boot partition
+        parted:
+            device: /dev/sda
+            number: 1
+            state: present
+            part_type: primary
+            part_end: "{{ boot_size }}"
 
-    - name: Create a new primary swap partition
-      parted:
-          device: /dev/sda
-          number: 2
-          state: present
-          part_type: primary
-          part_start: "{{ boot_size }}"
-          part_end: "{{ swap_size }}"
+      - name: Create a new primary swap partition
+        parted:
+            device: /dev/sda
+            number: 2
+            state: present
+            part_type: primary
+            part_start: "{{ boot_size }}"
+            part_end: "{{ swap_size }}"
 
-    - name: Create a new primary / partition
-      parted:
-          device: /dev/sda
-          number: 3
-          state: present
-          part_type: primary
-          part_start: "{{ swap_size}}"
-          part_end: "{{ root_size }}"
+      - name: Create a new primary / partition
+        parted:
+            device: /dev/sda
+            number: 3
+            state: present
+            part_type: primary
+            part_start: "{{ swap_size}}"
+            part_end: "{{ root_size }}"
 
-    - name: Create a new primary /home partition
-      parted:
-          device: /dev/sda
-          number: 4
-          part_type: extended
-          state: present
-          part_start: "{{ root_size }}"
+      - name: Create a new primary /home partition
+        parted:
+            device: /dev/sda
+            number: 4
+            part_type: extended
+            state: present
+            part_start: "{{ root_size }}"
+
+      - name: Create a ext4 filesystem on /boot
+        filesystem:
+            fstype: ext4
+            dev: /dev/sda1
+            opts: -cc
