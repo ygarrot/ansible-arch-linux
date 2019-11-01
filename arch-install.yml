@@ -1,6 +1,7 @@
 ---
 - name: Install Arch Linux from an Arch ISO
   hosts: localhost
+  vars_files: var.yml
   tasks:
     - name: Check internet connectivity
       wait_for:
@@ -13,20 +14,37 @@
     - name: Enable ntp
       command: /usr/bin/timedatectl status
       register: ntp
-    - debug: msg="{{ ntp.stdout }}"
-    - debug: msg="{{ ntp.stderr }}"
 
-    - name: Check disks
-      command: /usr/bin/fdisk -l
-      register: fdisk
-    - debug: msg="{{ fdisk.stdout }}"
-    - debug: msg="{{ fdisk.stderr }}"
-    - name: Partition disk
-      command: /usr/bin/fdisk /dev/sda
-    - name: Format disk
-      command: /usr/bin/mkfs.ext4 /dev/sda1
-    - name: Check disks
-      command: /usr/bin/fdisk -l
-      register: fdisk
-    - debug: msg="{{ fdisk.stdout }}"
-    - debug: msg="{{ fdisk.stderr }}"
+    - name: Create a new primary /boot partition
+      parted:
+          device: /dev/sda
+          number: 1
+          state: present
+          part_type: primary
+          part_end: "{{ boot_size }}"
+
+    - name: Create a new primary swap partition
+      parted:
+          device: /dev/sda
+          number: 2
+          state: present
+          part_type: primary
+          part_start: "{{ boot_size }}"
+          part_end: "{{ swap_size }}"
+
+    - name: Create a new primary / partition
+      parted:
+          device: /dev/sda
+          number: 3
+          state: present
+          part_type: primary
+          part_start: "{{ swap_size}}"
+          part_end: "{{ root_size }}"
+
+    - name: Create a new primary /home partition
+      parted:
+          device: /dev/sda
+          number: 4
+          part_type: extended
+          state: present
+          part_start: "{{ root_size }}"

@@ -1,0 +1,4 @@
+boot_size: "200Mib"
+swap_size: "12Gib"
+root_size: "50Gib"
+home_size: "42Gib"
