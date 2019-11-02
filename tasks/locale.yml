@@ -1,14 +1,15 @@
 ---
 - name: Ensure a locale exists
   locale_gen:
-      name: "{{ local.gen.item }}"
+      name: "{{ item }}"
       state: present
-      with_items: "{{ locale.languages.key() }}"
+      with_items: "{{ locale.languages }}"
+- debug: "msg:
 
 - name: Set timezone
   timezone:
       name: "{{ locale.timezone }}"
 
 - name: set default locale
-  command: localectl set-locale "LANG={{ locale.languages.item }}" "LC_ALL={{ locale.languages.item }}"
-  with_items: "{{ locale.gen.key() }}"
+  command: localectl set-locale "LANG={{ item }}" "LC_ALL={{ item }}"
+  with_items: "{{ locale.languages }}"

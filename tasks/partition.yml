@@ -23,7 +23,7 @@
       number: 3
       state: present
       part_type: primary
-      part_start: "{{ partition.swap.size}}"
+      part_start: "{{ partition.volumes.swap.size}}"
       part_end: "{{ partition.volumes.root.size }}"
 
 - name: "Create a new primary /home partition"

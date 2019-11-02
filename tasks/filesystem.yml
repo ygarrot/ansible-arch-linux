@@ -4,11 +4,8 @@
       dev: /dev/sda1
       opts: -cc
 
-- name: "Create a swap filesystem on /dev/sda2 for swap"
-  filesystem:
-      fstype: swap
-      dev: /dev/sda2
-      opts: -cc
+- name: "Setup swap partition"
+  shell: "mkswap /dev/sda2 && /usr/bin/swapon /dev/sda2"
 
 - name: "Create a ext4 filesystem on /dev/sda3 for root"
   filesystem:
@@ -22,5 +19,3 @@
       dev: /dev/sda4
       opts: -cc
 
-- name: "Setup swap partition"
-  shell: "mkswap /dev/sda2 && /usr/bin/swapon /dev/sda2"
