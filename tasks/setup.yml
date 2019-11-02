@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  vars_files: '../config.yml'
+  tasks:
+      - name: Install networkmanager
+        pacman:
+            name: networkmanager
+            state: present
+
+      - name: Make sure networkmanager is running
+        systemd:
+            state: started
+            name: NetworkManager
+
+      - include: locale.yml
+        when: locale is defined
+      - include: users.yml
+        when: users is defined
+      - include: boot.yml
+        when: storage is defined

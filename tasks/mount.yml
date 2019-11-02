@@ -1,0 +1,36 @@
+
+- name: "Create root directory"
+  file:
+      path: "{{ partition.volumes.root.mount }}"
+      state: directory
+      recurse: yes
+
+- name : "mount root"
+  mount:
+      path: "{{ partition.volumes.root.mount }}"
+      src: /dev/sda3
+      state: mounted
+
+- name: "Create boot directory"
+  file:
+      path: "{{ partition.volumes.boot.mount }}"
+      state: directory
+      recurse: yes
+
+- name : "mount boot"
+  mount:
+      path: "{{ partition.volumes.boot.mount }}"
+      src: /dev/sda1
+      state: mounted
+
+- name: "Create home directory"
+  file:
+      path: "{{ partition.volumes.home.mount }}"
+      state: directory
+      recurse: yes
+
+- name : "mount home"
+  mount:
+      path: "{{ partition.volumes.home.mount }}"
+      src: /dev/sda1
+      state: mounted

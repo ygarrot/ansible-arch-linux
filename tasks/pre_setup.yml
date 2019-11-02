@@ -2,7 +2,7 @@
 - name: "Install Arch Linux from an Arch ISO"
   hosts: localhost
   vars_files:
-      - var.yml
+      - ../config.yml
   tasks:
       - name: "Check internet connectivity"
         wait_for:

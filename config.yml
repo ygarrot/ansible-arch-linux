@@ -1,0 +1,23 @@
+partition:
+  name: /dev/sda
+  volumes:
+      boot:
+           size: '50GiB'
+           type: 'ext4'
+           mount: '/mnt/boot' 
+      swap:
+           size: '200MiB'
+           type: 'swap' 
+      root:
+           size: '12GiB'
+           type: 'ext4'
+           mount: '/mnt'
+      home:
+           size: '42GiB'
+           type: 'ext4'
+           mount: '/mnt/home' 
+
+locale:
+    timezone: "Europe/Paris"
+    languages:
+        "en_US.UTF-8"

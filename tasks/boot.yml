@@ -1,0 +1,12 @@
+---
+- name: Install grub
+  pacman:
+      name: grub
+      state: present
+
+- name: Runs grub install on storage
+  command: "grub-install --target=i386-pc --recheck {{ partition.name }}"
+
+- name: Generates grub.cfg
+  command: "/bin/grub-mkconfig -o /boot/grub/grub.cfg"
+

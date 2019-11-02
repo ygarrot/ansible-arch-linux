@@ -1,37 +1,37 @@
 ---
 - name: "Create a new primary /boot partition"
   parted:
-      device: /dev/sda
+      device: "{{ partition.name }}"
       number: 1
       flags: [ boot ]
       state: present
       part_type: primary
-      part_end: "{{ boot_size }}"
+      part_end: "{{ partition.volumes.boot.size }}"
 
 - name: "Create a new primary swap partition"
   parted:
-      device: /dev/sda
+      device: "{{ partition.name }}"
       number: 2
       state: present
       part_type: primary
-      part_start: "{{ boot_size }}"
-      part_end: "{{ swap_size }}"
+      part_start: "{{ partition.volumes.boot.size }}"
+      part_end: "{{ partition.volumes.swap.size }}"
 
 - name: "Create a new primary / partition"
   parted:
-      device: /dev/sda
+      device: "{{ partition.name }}"
       number: 3
       state: present
       part_type: primary
-      part_start: "{{ swap_size}}"
-      part_end: "{{ root_size }}"
+      part_start: "{{ partition.swap.size}}"
+      part_end: "{{ partition.volumes.root.size }}"
 
 - name: "Create a new primary /home partition"
   parted:
-      device: /dev/sda
+      device: "{{ partition.name }}"
       number: 4
       part_type: extended
       state: present
-      part_start: "{{ root_size }}"
+      part_start: "{{ partition.volumes.root.size }}"
 
 
