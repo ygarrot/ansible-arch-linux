@@ -2,18 +2,18 @@ partition:
   name: /dev/sda
   volumes:
       boot:
-           size: '50GiB'
+           size: '200MiB'
            type: 'ext4'
            mount: '/mnt/boot' 
       swap:
-           size: '200MiB'
+           size: '2GiB'
            type: 'swap' 
       root:
            size: '12GiB'
            type: 'ext4'
            mount: '/mnt'
       home:
-           size: '42GiB'
+           size: '12GiB'
            type: 'ext4'
            mount: '/mnt/home' 
 
