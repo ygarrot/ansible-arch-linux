@@ -30,7 +30,7 @@
   parted:
       device: "{{ partition.name }}"
       number: 4
-      part_type: extended
+      part_type: primary
       state: present
       part_start: "{{ partition.volumes.root.size }}"
 
