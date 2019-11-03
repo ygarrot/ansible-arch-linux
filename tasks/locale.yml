@@ -3,8 +3,7 @@
   locale_gen:
       name: "{{ item }}"
       state: present
-      with_items: "{{ locale.languages }}"
-- debug: "msg:
+  with_items: "{{ locale.languages }}"
 
 - name: Set timezone
   timezone:

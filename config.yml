@@ -20,4 +20,4 @@ partition:
 locale:
     timezone: "Europe/Paris"
     languages:
-        "en_US.UTF-8"
+        - "en_US.UTF-8"
