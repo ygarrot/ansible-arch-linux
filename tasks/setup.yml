@@ -13,8 +13,5 @@
             name: NetworkManager
 
       - include: locale.yml
-        when: locale is defined
-      - include: users.yml
-        when: users is defined
+        #- include: users.yml
       - include: boot.yml
-        when: storage is defined

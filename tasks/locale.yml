@@ -10,5 +10,5 @@
       name: "{{ locale.timezone }}"
 
 - name: set default locale
-  command: localectl set-locale "LANG={{ item }}" "LC_ALL={{ item }}"
+  command: localectl set-locale "LANG={{ item }}" #"LC_ALL={{ item }}"
   with_items: "{{ locale.languages }}"

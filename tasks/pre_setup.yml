@@ -10,7 +10,7 @@
             port: 80
 
       - name: "Enable ntp"
-        command: /usr/bin/timedatectl set-ntp true
+        command: timedatectl set-ntp true
 
       - name: "partitioning"
         include: partition.yml
@@ -22,7 +22,7 @@
         include: mount.yml
 
       - name: "Installs base system using pacstrap"
-        command: /usr/bin/pacstrap /mnt base base-devel ansible
+        command: pacstrap /mnt base base-devel ansible vim
 
       - name: "Populates base system fstab with configured storage devices"
-        shell: /usr/bin/genfstab -U -p /mnt >> /mnt/etc/fstab
+        shell: genfstab -U -p /mnt >> /mnt/etc/fstab
