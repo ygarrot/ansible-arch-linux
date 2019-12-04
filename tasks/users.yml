@@ -2,4 +2,5 @@
 - name: Change root password
   user:
       name: root
-      password: "{{ passwd }}"
+      password: "{{ password }}"
+

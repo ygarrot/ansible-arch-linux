@@ -1,6 +1,10 @@
 ---
 - hosts: localhost
   vars_files: '../config.yml'
+  vars_prompt:
+      - name: password
+        prompt: "What is your password?"
+        private: yes 
   tasks:
       - name: Install networkmanager
         pacman:
@@ -13,5 +17,5 @@
             name: NetworkManager
 
       - include: locale.yml
-        #- include: users.yml
+      - include: users.yml
       - include: boot.yml
