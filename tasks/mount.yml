@@ -8,7 +8,7 @@
 - name : "mount root"
   mount:
       path: "{{ partition.volumes.root.mount }}"
-      src: /dev/sda3
+      src: /dev/sda2
       fstype: ext4
       state: mounted
 
@@ -22,18 +22,5 @@
   mount:
       path: "{{ partition.volumes.boot.mount }}"
       src: /dev/sda1
-      fstype: ext4
-      state: mounted
-
-- name: "Create home directory"
-  file:
-      path: "{{ partition.volumes.home.mount }}"
-      state: directory
-      recurse: yes
-
-- name : "mount home"
-  mount:
-      path: "{{ partition.volumes.home.mount }}"
-      src: /dev/sda4
       fstype: ext4
       state: mounted

@@ -20,18 +20,8 @@
 - name: "Create a new primary / partition"
   parted:
       device: "{{ partition.name }}"
-      number: 3
+      number: 2
       state: present
       part_type: primary
-      part_start: "{{ partition.volumes.root.size}}"
+      part_start: "{{ partition.volumes.boot.size}}"
       # part_end: "{{ partition.volumes.root.size }}"
-
-# - name: "Create a new primary /home partition"
-#   parted:
-#       device: "{{ partition.name }}"
-#       number: 4
-#       part_type: primary
-#       state: present
-#       part_start: "{{ partition.volumes.root.size }}"
-
-

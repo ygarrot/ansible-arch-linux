@@ -1,8 +1,8 @@
 - name: "Create a ext4 filesystem on /dev/sda1 for boot"
   filesystem:
-      fstype: vfat
+      fstype: ext4
       dev: /dev/sda1
-      opts: -F 32 -cc
+      opts: -cc
 
 # - name: "Setup swap partition"
 #   shell: "mkswap /dev/sda2 && /usr/bin/swapon /dev/sda2"
@@ -10,12 +10,5 @@
 - name: "Create a ext4 filesystem on /dev/sda3 for root"
   filesystem:
       fstype: ext4
-      dev: /dev/sda3
+      dev: /dev/sda2
       opts: -cc
-
-# - name: "Create a ext4 filesystem on /dev/sda4 for home"
-#   filesystem:
-#       fstype: ext4
-#       dev: /dev/sda4
-#       opts: -cc
-
