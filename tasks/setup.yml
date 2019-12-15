@@ -9,7 +9,7 @@
         confirm: yes
         salt_size: 7
 
-      - name: user.password
+      - name: user_password
         prompt: "What will be for {{ user.name }} password ?"
         private: yes 
         encrypt: "sha512_crypt"

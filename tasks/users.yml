@@ -19,12 +19,12 @@
 
 - name: Create new user
   user:
-      name: {{ user.name }}
+      name: "{{ user.name }}"
       groups: wheel
       append: yes
       createhome: yes
       state: present
-      password: {{ user.password }}
+      password: "{{ user_password }}"
 
       # - name: Set up authorized keys for the deployer user
       #   authorized_key: user=deployer key="{{item}}"
@@ -33,8 +33,11 @@
 
 - name: clone aur module
   git:
-      repo: https://github.com/kewlfft/ansible-aur.git
+      repo: https://aur.archlinux.org/ansible-aur-git.git
       version: master
-      dest: "~/.ansible/plugins/modules/aur"
-      become: yes
-      become_user: {{ user.name }}
+      dest: "/tmp/aur"
+  become: yes
+  become_user: "{{ user.name }}"
+
+- name: install aur module
+  command: "cd /tmp/aur; makepkg -si"

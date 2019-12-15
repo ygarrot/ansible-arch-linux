@@ -17,7 +17,7 @@
       - include: mount.yml
 
       - name: "Installs base system using pacstrap"
-        command: pacstrap /mnt base base-devel linux linux-firmware ansible vim
+        command: pacstrap /mnt base base-devel linux linux-firmware git ansible vim
 
       - name: "Populates base system fstab with configured storage devices"
         shell: genfstab -U -p /mnt >> /mnt/etc/fstab
