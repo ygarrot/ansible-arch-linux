@@ -5,17 +5,12 @@ partition:
            size: '550MiB'
            type: 'fat32'
            mount: '/mnt/boot' 
-      # swap:
-      #      size: '2GiB'
-      #      type: 'swap' 
       root:
-           # size: '12GiB'
            type: 'ext4'
            mount: '/mnt'
-      # home:
-      #      size: '12GiB'
-      #      type: 'ext4'
-      #      mount: '/mnt/home' 
+
+user:
+    name: "your_username"
 
 locale:
     timezone: "Europe/Paris"

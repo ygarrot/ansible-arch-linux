@@ -2,12 +2,20 @@
 - hosts: localhost
   vars_files: '../config.yml'
   vars_prompt:
-      - name: password
+      - name: root_password
         prompt: "What will be root password ?"
         private: yes 
         encrypt: "sha512_crypt"
         confirm: yes
         salt_size: 7
+
+      - name: user.password
+        prompt: "What will be for {{ user.name }} password ?"
+        private: yes 
+        encrypt: "sha512_crypt"
+        confirm: yes
+        salt_size: 7
+
   tasks:
       - name: Install networkmanager
         pacman:

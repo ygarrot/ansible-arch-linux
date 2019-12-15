@@ -2,5 +2,39 @@
 - name: Change root password
   user:
       name: root
-      password: "{{ password }}"
+      password: "{{ root_password }}"
 
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+- name: Create new user
+  user:
+      name: {{ user.name }}
+      groups: wheel
+      append: yes
+      createhome: yes
+      state: present
+      password: {{ user.password }}
+
+# - name: Set up authorized keys for the deployer user
+#   authorized_key: user=deployer key="{{item}}"
+#   with_file:
+#     - /home/railsdev/.ssh/id_rsa.pub
+
+- name: clone aur module
+  git:
+    repo: https://github.com/kewlfft/ansible-aur.git
+        version: master
+        dest: "~/.ansible/plugins/modules/aur"
+  become: yes
+  become_user: {{ user.name }}
