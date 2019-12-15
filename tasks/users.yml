@@ -26,20 +26,8 @@
       state: present
       password: "{{ user_password }}"
 
-      # - name: Set up authorized keys for the deployer user
-      #   authorized_key: user=deployer key="{{item}}"
-      #   with_file:
-      #     - /home/railsdev/.ssh/id_rsa.pub
+- name: Set up authorized keys for the deployer user
+  authorized_key: user=deployer key="{{item}}"
+  with_file:
+      - /home/railsdev/.ssh/id_rsa.pub
 
-      # - name: clone aur module
-      #   git:
-      #       repo: https://aur.archlinux.org/ansible-aur-git.git
-      #       version: master
-      #       dest: "aur"
-      #   become: yes
-      #   become_user: aur_builder
-
-      # - name: install aur module
-      #   command: "cd aur; makepkg -si"
-      #   become: yes
-      #   become_user: aur_builder
