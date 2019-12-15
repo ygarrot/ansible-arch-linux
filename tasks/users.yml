@@ -6,8 +6,8 @@
 
 - name: Make sure we have a 'wheel' group
   group:
-    name: wheel
-    state: present
+      name: wheel
+      state: present
 
 - name: Allow 'wheel' group to have passwordless sudo
   lineinfile:
@@ -26,15 +26,15 @@
       state: present
       password: {{ user.password }}
 
-# - name: Set up authorized keys for the deployer user
-#   authorized_key: user=deployer key="{{item}}"
-#   with_file:
-#     - /home/railsdev/.ssh/id_rsa.pub
+      # - name: Set up authorized keys for the deployer user
+      #   authorized_key: user=deployer key="{{item}}"
+      #   with_file:
+      #     - /home/railsdev/.ssh/id_rsa.pub
 
 - name: clone aur module
   git:
-    repo: https://github.com/kewlfft/ansible-aur.git
-        version: master
-        dest: "~/.ansible/plugins/modules/aur"
-  become: yes
-  become_user: {{ user.name }}
+      repo: https://github.com/kewlfft/ansible-aur.git
+      version: master
+      dest: "~/.ansible/plugins/modules/aur"
+      become: yes
+      become_user: {{ user.name }}
