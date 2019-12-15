@@ -3,7 +3,7 @@
   vars_files: '../config.yml'
   vars_prompt:
       - name: password
-        prompt: "What is your password?"
+        prompt: "What will be root password ?"
         private: yes 
   tasks:
       - name: Install networkmanager
@@ -11,10 +11,11 @@
             name: networkmanager
             state: present
 
-      - name: Make sure networkmanager is running
+      - name: Make sure networkmanager will be running after reboot
         systemd:
-            state: started
             name: NetworkManager
+            enabled: yes
+            state: started
 
       - include: locale.yml
       - include: users.yml

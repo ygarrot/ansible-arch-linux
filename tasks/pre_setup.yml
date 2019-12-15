@@ -12,14 +12,9 @@
       - name: "Enable ntp"
         command: timedatectl set-ntp true
 
-      - name: "partitioning"
-        include: partition.yml
-
-      - name: "filesystem"
-        include: filesystem.yml
-
-      - name: "mount"
-        include: mount.yml
+      - include: partition.yml
+      - include: filesystem.yml
+      - include: mount.yml
 
       - name: "Installs base system using pacstrap"
         command: pacstrap /mnt base base-devel linux linux-firmware ansible vim

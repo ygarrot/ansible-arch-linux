@@ -5,6 +5,9 @@ SCRIPTS_DIR=$(readlink -m "$(dirname $0)")
 CHROOT_SCRIPTS_DIR=/$(basename $SCRIPTS_DIR)
 INSTALL_DIR=/mnt
 
+echo 'increasing /run/archiso/cowspace size for ansible download'
+mount -o remount, size=1G /run/archiso/cowspace
+
 echo 'starting installation...'
 
 pacman -S ansible
