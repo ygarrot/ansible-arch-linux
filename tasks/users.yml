@@ -26,8 +26,8 @@
       state: present
       password: "{{ user_password }}"
 
-- name: Set up authorized keys for the deployer user
-  authorized_key: user=deployer key="{{item}}"
-  with_file:
-      - /home/railsdev/.ssh/id_rsa.pub
+# - name: Set up authorized keys for the deployer user
+#   authorized_key: user=deployer key="{{item}}"
+#   with_file:
+#       - /home/railsdev/.ssh/id_rsa.pub
 
